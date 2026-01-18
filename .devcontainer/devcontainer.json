@@ -1,0 +1,31 @@
+{
+  "name": "ROS 2 Jazzy Desktop (VNC)",
+  // UPDATED: Using the official Tiryoh image for Jazzy Jalisco (Ubuntu 24.04)
+  "image": "tiryoh/ros2-desktop-vnc:jazzy",
+
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "Ubuntu Desktop (VNC)",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // CRITICAL: Prevents Gazebo/RViz crashing in the browser
+  "runArgs": [
+    "--security-opt", "seccomp=unconfined",
+    "--shm-size=512m"
+  ],
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-vscode.cpptools",
+        "ms-iot.vscode-ros"
+      ]
+    }
+  },
+  
+  "remoteUser": "ubuntu"
+}
