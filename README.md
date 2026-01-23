@@ -17,15 +17,19 @@ Welcome to your ROS 2 Jazzy lab! You will be using a cloud computer that has two
 3.  Click **Create codespace on main**.
 4.  **Wait:** It will take 2–5 minutes to build the computer.
 5.  Once it loads, you will see VS Code inside your browser.
+![Step 1 - Open Codespaces menu](images/step1_part1.png)
+![Step 1 - Create codespace](images/step1_part2.png)
 
 ### Step 2: Prepare VS Code
 Before starting, ensure your environment is ready:
 1.  **Open the Integrated Terminal:**
-    * Press `Ctrl` + `~` (the key next to 1).
-    * *Or* Click the "Hamburger Menu" (≡) top-left → **Terminal** → **New Terminal**.
+    * Press `Ctrl` + `Shift` + `p`.
+    * *Or* Click the "Hamburger Menu" (≡) top-left → **Terminal** → **New Terminal** (with profile) → Bash.
 2.  **Check Extensions:**
     * You might see a notification in the bottom right: *"Installing extensions..."*
-    * Please wait 1 minute for the **ROS** and **Python** extensions to finish installing automatically.
+    * Please wait 1 minute for the **ROS**, **Python**, **Dev container** extensions to finish installing automatically.
+![Step 2 - Open terminal](images/step2_part1.png)
+![Step 2 - Extensions installing](images/step2_part2.png)
 
 ### Step 3: Initialize the Virtual Screen
 We need to manually start the connection to the robot's screen.
@@ -34,8 +38,9 @@ We need to manually start the connection to the robot's screen.
     websockify --web=/usr/lib/novnc 6080 localhost:5901 &
     ```
     *(Note: If you see a "Job" number like `[1] 1234`, that is good! It means it is running in the background.)*
+![Step 3 - Start websockify](images/step3.png)
 
-### Step 4: Open the Robot Display
+### Step 4: Open the Robot Display (Optional if previous step does not work)
 Now that the connection is running, open the screen:
 1.  Look at the bottom panel and click the **PORTS** tab.
     * *Don't see it? Press `F1`, type "Ports", and select "Focus on Ports View".*
@@ -43,6 +48,8 @@ Now that the connection is running, open the screen:
 3.  Right-click the row and verify **Port Visibility** is set to **Public**.
 4.  Click the **Globe Icon 🌐** (Open in Browser) next to Port 6080.
 5.  A new tab will open. Click **Connect**. You should see a gray desktop.
+![Step 4 - Ports tab](images/step4_part1.png)
+![Step 4 - Open VNC](images/step4_part2.png)
 
 ---
 
@@ -55,6 +62,8 @@ You now have two browser tabs open.
     * Type: `ros2 run turtlesim turtlesim_node`.
 
 **Note:** Any file you save in VS Code appears instantly in the Virtual Desktop.
+![Step 5 - VS Code tab](images/step5_part1.png)
+![Step 5 - Virtual desktop](images/step5_part2.png)
 
 ### Step 6: STOPPING (Crucial!)
 When you are done with the lab, **do not just close the browser**.
