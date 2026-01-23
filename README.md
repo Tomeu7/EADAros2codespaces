@@ -40,8 +40,9 @@ We need to manually start the connection to the robot's screen.
     *(Note: If you see a "Job" number like `[1] 1234`, that is good! It means it is running in the background.)*
 ![Step 3 - Start websockify](images/step3.png)
 
-### Step 4: Open the Robot Display (Optional if previous step does not work)
+### Step 4: Open the Robot Display
 Now that the connection is running, open the screen:
+**Note:** You might not need steps 1-4 on all machines; skip this section if the display already opens for you.
 1.  Look at the bottom panel and click the **PORTS** tab.
     * *Don't see it? Press `F1`, type "Ports", and select "Focus on Ports View".*
 2.  Find **Port 6080** (Label: `Ubuntu Desktop (VNC)`).
@@ -73,3 +74,8 @@ When you are done with the lab, **do not just close the browser**.
 4.  Wait until you see the "Codespace is stopped" message.
 
 *This stops the billing timer immediately.*
+
+---
+
+### Saving Your Code (Optional)
+If you want a copy of your work outside the Codespace, you need to download it or push it to GitHub (for example, by forking this repo and pushing your changes).
