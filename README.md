@@ -40,6 +40,8 @@ We need to manually start the connection to the robot's screen.
     *(Note: If you see a "Job" number like `[1] 1234`, that is good! It means it is running in the background.)*
 ![Step 3 - Start websockify](images/step3.png)
 
+Note, if the novnc webpage asks for a password try with ubuntu.
+
 ### Step 4: Open the Robot Display
 Now that the connection is running, open the screen:
 **Note:** You might not need steps 1-4 on all machines; skip this section if the display already opens for you.
