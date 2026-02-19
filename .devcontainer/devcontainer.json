@@ -11,6 +11,8 @@
     }
   },
 
+  "overrideCommand": false,
+  
   // CRITICAL: Prevents Gazebo/RViz crashing in the browser
   "runArgs": [
     "--security-opt", "seccomp=unconfined",
