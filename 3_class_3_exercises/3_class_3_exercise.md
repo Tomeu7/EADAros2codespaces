@@ -12,13 +12,14 @@ source /opt/ros/jazzy/setup.bash
 1. Spawn car
 2. Move it with GUI
 3. Inspect Gazebo topics
-4. Start ROS-Gazebo bridge
-5. Inspect ROS topics
-6. Drive with `/cmd_vel`
-7. Spawn robot
-8. Hit robot with car and observe collisions
-9. Spawn/bridge TF
-10. Take-home task
+4. Move car with Gazebo service
+5. Start ROS-Gazebo bridge
+6. Inspect ROS topics
+7. Drive with `/cmd_vel`
+8. Spawn robot
+9. Hit robot with car and observe collisions
+10. Spawn/bridge TF
+11. Take-home task
 
 ## Exercise 0: Start Gazebo world
 
@@ -56,7 +57,24 @@ gz topic -e -t /world/empty_class3/pose/info
 
 Expected: you can find pose/state streams and world services.
 
-## Exercise 4: Start ROS to Gazebo bridge
+## Exercise 4: Move car with Gazebo service
+
+Goal: change `simple_car` pose at runtime from CLI.
+
+```bash
+# Check service availability
+gz service -l | grep set_pose
+
+# Move simple_car
+gz service -s /world/empty_class3/set_pose \
+  --reqtype gz.msgs.Pose \
+  --reptype gz.msgs.Boolean \
+  --req 'name: "simple_car", position: {x: 1.5, y: -0.5, z: 0.2}'
+```
+
+Expected: `simple_car` jumps to the new position and `/world/empty_class3/pose/info` updates.
+
+## Exercise 5: Start ROS to Gazebo bridge
 
 Remember in bridge syntax, `[` means Gazebo to ROS and `]` means ROS to Gazebo.
 
@@ -74,7 +92,7 @@ Terminal B:
 ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist
 ```
 
-## Exercise 5: Inspect ROS topics
+## Exercise 6: Inspect ROS topics
 
 ```bash
 ros2 topic list
@@ -83,7 +101,7 @@ ros2 topic echo /clock
 
 Expected: `/clock` is visible and publishing.
 
-## Exercise 6: Drive car with `/cmd_vel`
+## Exercise 7: Drive car with `/cmd_vel`
 
 Straight:
 
@@ -99,7 +117,7 @@ ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.2}, angular: {z:
 
 Expected: car drives and turns.
 
-## Exercise 7: Spawn robot target
+## Exercise 8: Spawn robot target
 
 ```bash
 ros2 run ros_gz_sim create   -world empty_class3   -entity service_bot   -file robot.urdf   -x 2 -y 0 -z 0.1
@@ -109,7 +127,7 @@ If it fails, the model is not in your local Gazebo resources yet.
 
 Expected: a second robot appears ahead of the car.
 
-## Exercise 8: Collision demo
+## Exercise 9: Collision demo
 
 - Keep publishing `/cmd_vel` to drive toward `robot_target`
 - Observe contact/push behavior in Gazebo
@@ -121,7 +139,7 @@ Optional check from CLI:
 gz topic -l | grep -i contact
 ```
 
-## Exercise 9: Spawn/bridge TF
+## Exercise 10: Spawn/bridge TF
 
 Bridge pose stream into ROS TF message:
 
