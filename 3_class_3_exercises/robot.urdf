@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<robot name="service_bot">
+
+  <material name="matte_black">
+    <color rgba="0.12 0.12 0.12 1.0"/>
+  </material>
+  <material name="silver">
+    <color rgba="0.72 0.74 0.77 1.0"/>
+  </material>
+  <material name="signal_blue">
+    <color rgba="0.12 0.34 0.85 1.0"/>
+  </material>
+  <material name="sensor_green">
+    <color rgba="0.20 0.90 0.65 1.0"/>
+  </material>
+  <material name="amber">
+    <color rgba="0.95 0.62 0.12 1.0"/>
+  </material>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0.10" rpy="0 0 0"/>
+      <mass value="28.0"/>
+      <inertia ixx="1.10" ixy="0.0" ixz="0.0"
+               iyy="1.10" iyz="0.0"
+               izz="1.10"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0.11" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.30" length="0.16"/>
+      </geometry>
+      <material name="matte_black"/>
+    </visual>
+
+    <visual>
+      <origin xyz="0 0 0.17" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.25" length="0.04"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.11" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.30" length="0.16"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="left_wheel_link">
+    <inertial>
+      <mass value="1.2"/>
+      <inertia ixx="0.03" ixy="0.0" ixz="0.0"
+               iyy="0.03" iyz="0.0"
+               izz="0.03"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.10" length="0.08"/>
+      </geometry>
+      <material name="matte_black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.10" length="0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel_link"/>
+    <origin xyz="0 0.27 0.10" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="right_wheel_link">
+    <inertial>
+      <mass value="1.2"/>
+      <inertia ixx="0.03" ixy="0.0" ixz="0.0"
+               iyy="0.03" iyz="0.0"
+               izz="0.03"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.10" length="0.08"/>
+      </geometry>
+      <material name="matte_black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.10" length="0.08"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel_link"/>
+    <origin xyz="0 -0.27 0.10" rpy="1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="rear_caster_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="rear_caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="rear_caster_link"/>
+    <origin xyz="-0.20 0 0.06" rpy="0 0 0"/>
+  </joint>
+
+  <link name="torso_link">
+    <inertial>
+      <mass value="8.0"/>
+      <inertia ixx="0.25" ixy="0.0" ixz="0.0"
+               iyy="0.25" iyz="0.0"
+               izz="0.20"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.26 0.22 0.40"/>
+      </geometry>
+      <material name="signal_blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.26 0.22 0.40"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="torso_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="torso_link"/>
+    <origin xyz="0 0 0.42" rpy="0 0 0"/>
+  </joint>
+
+  <link name="screen_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.16 0.22"/>
+      </geometry>
+      <material name="sensor_green"/>
+    </visual>
+  </link>
+
+  <joint name="screen_joint" type="fixed">
+    <parent link="torso_link"/>
+    <child link="screen_link"/>
+    <origin xyz="0.135 0 0.03" rpy="0 0 0"/>
+  </joint>
+
+  <link name="shoulder_bar_link">
+    <visual>
+      <geometry>
+        <box size="0.08 0.46 0.06"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+  </link>
+
+  <joint name="shoulder_bar_joint" type="fixed">
+    <parent link="torso_link"/>
+    <child link="shoulder_bar_link"/>
+    <origin xyz="-0.02 0 0.20" rpy="0 0 0"/>
+  </joint>
+
+  <link name="left_arm_link">
+    <visual>
+      <origin xyz="0 0 -0.13" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.04" length="0.26"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 -0.26" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="amber"/>
+    </visual>
+  </link>
+
+  <joint name="left_arm_joint" type="fixed">
+    <parent link="shoulder_bar_link"/>
+    <child link="left_arm_link"/>
+    <origin xyz="0 0.20 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="right_arm_link">
+    <visual>
+      <origin xyz="0 0 -0.13" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.04" length="0.26"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <visual>
+      <origin xyz="0 0 -0.26" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="amber"/>
+    </visual>
+  </link>
+
+  <joint name="right_arm_joint" type="fixed">
+    <parent link="shoulder_bar_link"/>
+    <child link="right_arm_link"/>
+    <origin xyz="0 -0.20 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="head_link">
+    <inertial>
+      <mass value="2.0"/>
+      <inertia ixx="0.02" ixy="0.0" ixz="0.0"
+               iyy="0.02" iyz="0.0"
+               izz="0.02"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.13"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.13"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="head_joint" type="fixed">
+    <parent link="torso_link"/>
+    <child link="head_link"/>
+    <origin xyz="0 0 0.30" rpy="0 0 0"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.04"/>
+      </geometry>
+      <material name="sensor_green"/>
+    </visual>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="head_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.16" rpy="0 0 0"/>
+  </joint>
+
+  <link name="camera_link">
+    <visual>
+      <geometry>
+        <box size="0.08 0.05 0.05"/>
+      </geometry>
+      <material name="sensor_green"/>
+    </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="head_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0.13 0 0.01" rpy="0 0 0"/>
+  </joint>
+
+  <link name="antenna_link">
+    <visual>
+      <origin xyz="0 0 0.10" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.20"/>
+      </geometry>
+      <material name="amber"/>
+    </visual>
+  </link>
+
+  <joint name="antenna_joint" type="fixed">
+    <parent link="head_link"/>
+    <child link="antenna_link"/>
+    <origin xyz="-0.06 0.05 0.10" rpy="0 0 0"/>
+  </joint>
+
+</robot>
