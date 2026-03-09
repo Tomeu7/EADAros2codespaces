@@ -1,0 +1,284 @@
+<?xml version="1.0"?>
+
+<!--
+  robot_default.urdf
+  This is the base robot given to students.
+  It contains only the chassis, wheels, caster wheel, and differential drive plugin.
+  Students must add: LiDAR, IMU, and Camera sensors as exercises.
+-->
+
+<robot name="robot">
+
+    <!-- ========================================================
+         GAZEBO MATERIAL / FRICTION PROPERTIES
+         These define how each link looks and behaves in Gazebo.
+         They are separate from the URDF visual materials.
+    ======================================================== -->
+
+    <!-- Chassis: rendered blue in Gazebo with moderate friction -->
+    <gazebo reference="link_chassis">
+        <visual>
+            <material>
+                <ambient>0.0 0.0 1.0 1.0</ambient>
+                <diffuse>0.0 0.0 1.0 1.0</diffuse>
+                <specular>0.0 0.0 0.0 1.0</specular>
+                <emissive>0.0 0.0 0.0 1.0</emissive>
+            </material>
+        </visual>
+        <collision>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>0.5</mu>   <!-- Coulomb friction coefficient -->
+                        <mu2>0.5</mu2> <!-- Second friction direction -->
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+    </gazebo>
+
+    <!-- Caster wheel: gray, low friction so it can spin freely -->
+    <gazebo reference="link_caster_wheel">
+        <visual>
+            <material>
+                <ambient>0.25 0.25 0.25 1.0</ambient>
+                <diffuse>0.25 0.25 0.25 1.0</diffuse>
+                <specular>0.0 0.0 0.0 1.0</specular>
+                <emissive>0.0 0.0 0.0 1.0</emissive>
+            </material>
+        </visual>
+        <collision>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>0.5</mu>
+                        <mu2>0.5</mu2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+    </gazebo>
+
+    <!-- Left wheel: black -->
+    <gazebo reference="link_left_wheel">
+        <visual>
+            <material>
+                <ambient>0.1 0.1 0.1 1.0</ambient>
+                <diffuse>0.1 0.1 0.1 1.0</diffuse>
+                <specular>0.0 0.0 0.0 1.0</specular>
+                <emissive>0.0 0.0 0.0 1.0</emissive>
+            </material>
+        </visual>
+        <collision>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>0.5</mu>
+                        <mu2>0.5</mu2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+    </gazebo>
+
+    <!-- Right wheel: black -->
+    <gazebo reference="link_right_wheel">
+        <visual>
+            <material>
+                <ambient>0.1 0.1 0.1 1.0</ambient>
+                <diffuse>0.1 0.1 0.1 1.0</diffuse>
+                <specular>0.0 0.0 0.0 1.0</specular>
+                <emissive>0.0 0.0 0.0 1.0</emissive>
+            </material>
+        </visual>
+        <collision>
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>0.5</mu>
+                        <mu2>0.5</mu2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+    </gazebo>
+
+
+    <!-- ========================================================
+         CHASSIS
+         The main body of the robot. Box shaped, 2x1.3x0.4m.
+         Mass: 10kg. Origin at centre of the box.
+    ======================================================== -->
+    <link name="link_chassis">
+        <inertial>
+            <mass value="10" />
+            <origin xyz="0 0 0.3" rpy="0 0 0" />
+            <!-- Inertia tensor for a solid box (pre-calculated) -->
+            <inertia ixx="1.5417" ixy="0" ixz="0" iyy="3.467" iyz="0" izz="4.742" />
+        </inertial>
+
+        <collision>
+            <geometry>
+                <box size="2 1.3 0.4" /> <!-- length x width x height -->
+            </geometry>
+        </collision>
+
+        <visual>
+            <geometry>
+                <box size="2 1.3 0.4" />
+            </geometry>
+            <material name="Red">
+                <color rgba="1 0 0 1" /> <!-- Red in RViz -->
+            </material>
+        </visual>
+    </link>
+
+
+    <!-- ========================================================
+         LEFT WHEEL
+         Continuous joint allows unlimited rotation around Y axis.
+         Positioned at (-0.5, +0.65, 0) relative to chassis centre.
+    ======================================================== -->
+    <joint name="joint_chassis_left_wheel" type="continuous">
+        <origin rpy="0 0 0" xyz="-0.5 0.65 0" />
+        <child link="link_left_wheel" />
+        <parent link="link_chassis" />
+        <axis rpy="0 0 0" xyz="0 1 0" /> <!-- Rotates around Y axis -->
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
+
+    <link name="link_left_wheel">
+        <inertial>
+            <mass value="1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.002526666666667" ixy="0" ixz="0"
+            iyy="0.002526666666667" iyz="0" izz="0.005"/>
+        </inertial>
+
+        <!-- Outer tyre cylinder: radius=0.4m, offset +0.18m on Y -->
+        <collision>
+            <origin rpy="1.5707 0 0" xyz="0 0.18 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.4"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="1.5707 0 0" xyz="0 0.18 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.4"/>
+            </geometry>
+        </visual>
+
+        <!-- Inner hub cylinder: smaller radius, closer to chassis -->
+        <collision>
+            <origin rpy="1.5707 0 0" xyz="0 0.06 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.08"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="1.5707 0 0" xyz="0 0.06 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.08"/>
+            </geometry>
+        </visual>
+    </link>
+
+
+    <!-- ========================================================
+         RIGHT WHEEL
+         Mirror of the left wheel, positioned at (-0.5, -0.65, 0).
+    ======================================================== -->
+    <joint name="joint_chassis_right_wheel" type="continuous">
+        <origin rpy="0 0 0" xyz="-0.5 -0.65 0" />
+        <child link="link_right_wheel" />
+        <parent link="link_chassis" />
+        <axis rpy="0 0 0" xyz="0 1 0" />
+        <limit effort="10000" velocity="1000" />
+        <joint_properties damping="1.0" friction="1.0" />
+    </joint>
+
+    <link name="link_right_wheel">
+        <inertial>
+            <mass value="1" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.002526666666667" ixy="0" ixz="0" iyy="0.002526666666667" iyz="0" izz="0.005"/>
+        </inertial>
+
+        <!-- Outer tyre: offset -0.18m on Y (opposite side) -->
+        <collision>
+            <origin rpy="1.5707 0 0" xyz="0 -0.18 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.4"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="1.5707 0 0" xyz="0 -0.18 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.4"/>
+            </geometry>
+        </visual>
+
+        <!-- Inner hub -->
+        <collision>
+            <origin rpy="1.5707 0 0" xyz="0 -0.06 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.08"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin rpy="1.5707 0 0" xyz="0 -0.06 0" />
+            <geometry>
+                <cylinder length="0.12" radius="0.08"/>
+            </geometry>
+        </visual>
+    </link>
+
+
+    <!-- ========================================================
+         CASTER WHEEL
+         A passive front support wheel. Fixed joint (no motor).
+         Small sphere at the front of the chassis.
+    ======================================================== -->
+    <link name="link_caster_wheel">
+        <visual>
+            <geometry>
+                <sphere radius="0.05"/>
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <sphere radius="0.05"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.0001" iyy="0.0001" izz="0.0001"
+                    ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <!-- Fixed joint at front of chassis (x=0.8) -->
+    <joint name="joint_chassis_caster_wheel" type="fixed">
+        <parent link="link_chassis"/>
+        <child link="link_caster_wheel"/>
+        <origin xyz="0.8 0 0"/>
+    </joint>
+
+    <!-- Preserve this fixed joint in Gazebo (prevents merging links) -->
+    <gazebo reference="joint_chassis_caster_wheel">
+        <preserveFixedJoint>true</preserveFixedJoint>
+    </gazebo>
+
+
+    <!-- ========================================================
+         EXERCISE AREA
+         Students must add the following below:
+           1. Differential Drive Plugin  (Exercise 1)
+           2. LiDAR                      (Exercise 2)
+           3. IMU                        (Exercise 3)
+           4. Camera                     (Exercise 5)
+    ======================================================== -->
+
+</robot>
