@@ -1,0 +1,22 @@
+/**/*:
+  ros__parameters:
+    broker:
+      host: localhost
+      port: 1883
+
+    bridge:
+      ros2mqtt:
+        # List all ROS 2 topics you want to forward, then configure each one below
+        ros_topics:
+          - /rosout
+          # TODO: add more topics here, e.g.:
+          # - /scan
+          # - /imu
+          # - /odom
+
+        /rosout:
+          mqtt_topic: robot/logs
+          primitive: true
+        # TODO: add config for each topic you added above, e.g.:
+        # /scan:
+        #   mqtt_topic: robot/scan

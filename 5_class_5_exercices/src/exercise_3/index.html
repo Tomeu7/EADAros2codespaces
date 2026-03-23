@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Robot Diagnostics</title>
+  <script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+  <style>
+    body { font-family: monospace; background: #1e1e1e; color: #d4d4d4; padding: 2rem; }
+    h1   { color: #569cd6; }
+    #status { margin-bottom: 1rem; color: #9cdcfe; }
+    .card {
+      background: #252526; border-left: 4px solid #555;
+      padding: 0.8rem 1rem; margin: 0.5rem 0; border-radius: 4px;
+    }
+    .card.ok    { border-color: #4ec94e; }
+    .card.warn  { border-color: #e2c95a; }
+    .card.error { border-color: #f44747; }
+    .card h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
+    .card p  { margin: 0; font-size: 0.85rem; color: #9e9e9e; }
+  </style>
+</head>
+<body>
+  <h1>Robot Diagnostics</h1>
+  <div id="status">Connecting...</div>
+  <div id="diagnostics"></div>
+
+  <script>
+    // ── Connect to rosbridge ──────────────────────────────────────────────────
+    const ros = new ROSLIB.Ros({ url: 'ws://localhost:9090' })
+
+    ros.on('connection', () => {
+      document.getElementById('status').textContent = 'Connected'
+    })
+    ros.on('close', () => {
+      document.getElementById('status').textContent = 'Disconnected'
+    })
+
+    // ── Subscribe to /diagnostics ─────────────────────────────────────────────
+    const diagTopic = new ROSLIB.Topic({
+      ros,
+      name: '/diagnostics',
+      messageType: 'diagnostic_msgs/DiagnosticArray'
+    })
+
+    diagTopic.subscribe(message => updateDiagnostics(message))
+
+    // ── Display logic ─────────────────────────────────────────────────────────
+    const LEVEL = { 0: ['ok', 'OK'], 1: ['warn', 'WARN'], 2: ['error', 'ERROR'] }
+
+    function updateDiagnostics(message) {
+      const container = document.getElementById('diagnostics')
+      container.innerHTML = ''
+      for (const status of message.status) {
+        const [cls, label] = LEVEL[status.level] ?? ['', '?']
+        const details = status.values.map(v => `${v.key}: ${v.value}`).join(' | ')
+        const card = document.createElement('div')
+        card.className = `card ${cls}`
+        card.innerHTML = `<h3>[${label}] ${status.name}</h3><p>${status.message}${details ? ' — ' + details : ''}</p>`
+        container.appendChild(card)
+      }
+    }
+  </script>
+</body>
+</html>
